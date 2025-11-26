@@ -57,8 +57,18 @@ fn clippy() -> Result<()> {
 }
 
 fn unit_test() -> Result<()> {
-    println!("{}", style("cargo nextest run --all-features").bold());
-    cmd!("cargo", "nextest", "run", "--all-features").run()?;
+    println!(
+        "{}",
+        style("cargo nextest run --all-features --no-tests=pass").bold()
+    );
+    cmd!(
+        "cargo",
+        "nextest",
+        "run",
+        "--all-features",
+        "--no-tests=pass",
+    )
+    .run()?;
     Ok(())
 }
 
