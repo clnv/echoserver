@@ -2,16 +2,16 @@ use std::net::SocketAddr;
 use std::time::Duration;
 
 use anyhow::Result;
+use axum::Router;
 use axum::extract::Request;
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
-use axum::Router;
 use tokio::net::TcpListener;
 use tokio::time::timeout;
 use tower_http::cors::CorsLayer;
 use tower_http::timeout::TimeoutLayer;
 use tower_http::trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer};
-use tracing::{info, Level};
+use tracing::{Level, info};
 
 async fn ping(_req: Request) -> Response {
     "pong".into_response()

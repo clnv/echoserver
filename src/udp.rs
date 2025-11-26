@@ -31,16 +31,21 @@ pub async fn serve(addr: SocketAddr) -> Result<()> {
     info!("UDP server up on {addr}");
 
     loop {
-        let mut buf = [0; 2048];
-        match socket.recv_from(&mut buf).await {
-            Ok((n, remote_addr)) => {
-                handle(Arc::clone(&socket), remote_addr, &buf[0..n])
-                    .await
-                    .unwrap_or_else(|e| panic!("failed to echo data from UDP server {addr}: {e}"));
-            }
-            Err(e) => {
-                error!("[UDP/{addr}] Failed to receive data: {e}");
-            }
+        let socket = Arc::clone(&socket);
+        recv_from(socket, addr).await;
+    }
+}
+
+async fn recv_from(socket: Arc<UdpSocket>, addr: SocketAddr) {
+    let mut buf = [0; 2048];
+    match socket.recv_from(&mut buf).await {
+        Ok((n, remote_addr)) => {
+            handle(Arc::clone(&socket), remote_addr, &buf[0..n])
+                .await
+                .unwrap_or_else(|e| panic!("failed to echo data from UDP server {addr}: {e}"));
+        }
+        Err(e) => {
+            error!("[UDP/{addr}] Failed to receive data: {e}");
         }
     }
 }
