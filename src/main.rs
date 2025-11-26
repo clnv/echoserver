@@ -36,7 +36,7 @@ use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use anyhow::Result;
 use clap::Parser;
 use tokio::runtime;
-use tracing::{error, info, Level};
+use tracing::{Level, error, info};
 
 #[derive(Default, Debug, Clone)]
 struct SocketAddrs(Vec<SocketAddr>);
